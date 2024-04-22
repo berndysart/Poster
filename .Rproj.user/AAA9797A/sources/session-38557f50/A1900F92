@@ -3,9 +3,9 @@
     "path": "~/Desktop/data analysis/poster/poster script.R",
     "project_path": "poster script.R",
     "type": "r_source",
-    "hash": "0",
+    "hash": "1160090718",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1713319405056.0,
     "source_on_save": false,
     "relative_order": 1,
@@ -17,11 +17,11 @@
         "scrollLine": "178"
     },
     "folds": "",
-    "lastKnownWriteTime": 1713742046,
+    "lastKnownWriteTime": 1713749920,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1713749223024,
+    "last_content_update": 1713749920239,
     "read_only": false,
     "read_only_alternatives": []
 }

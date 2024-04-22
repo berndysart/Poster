@@ -179,3 +179,25 @@ modelsummary(mods,
              title = 'DV: Immigration Crime Rate Response')
 
 stargazer(mods, type = 'html', keep.stat = 'n')
+
+modelplot(mods, coef_omit = 'Interc') +
+  scale_color_manual(
+    name = "Model", 
+    labels = c("Small Model", "Medium Model", "Large Model"),
+    values = c("#f0e130", "#100c08", "#ff0800")
+  ) + 
+  theme_minimal(base_size = 15) +
+  theme(
+    panel.grid = element_blank(),
+    panel.background = element_blank(),
+    plot.title = element_text(hjust = 0.5),
+    axis.line = element_line(color = 'black'),
+    strip.background = element_blank(),
+    strip.text = element_blank()
+  ) +
+  labs(
+    x = 'Coefficients',
+    title = 'Linear Regression of "Immigrants Raise Crime Rate Question"'
+  )
+
+          

@@ -1,0 +1,267 @@
+---
+main_topsize: 0.2 
+main_bottomsize: 0.1
+title: '**Education Level and Immigration**'
+author:
+  - name: '**Bern DySart**'
+    affil: 1
+    main: true
+    orcid: '0000-0002-1099-3857'
+    email: bd0482a@american.edu
+affiliation:
+  - num: 1
+    address: School of International Service, American University
+main_findings:
+  - "Education Is Correlated to Positive Views on Immigration in Hungary"
+logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+logocenter_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/qr-code-black.png
+primary_colour: "#679267"
+secondary_colour: "#A9BA9D"
+accent_colour: "#cc0000"
+output: 
+  posterdown::posterdown_betterport:
+    self_contained: false
+    pandoc_args: --mathjax
+    number_sections: false
+bibliography: packages.bib
+link-citations: true
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+library(haven)
+library(stargazer)
+library(knitr)
+library(scales)
+library(lfe)
+library(modelsummary)
+library(gt)
+
+options(modelsummary_factory_default = "gt")
+
+df = read_sav("ZA5960_v1-0-0.sav")
+
+df = 
+  df |>
+  filter(COUNTRY == 348)|>
+  mutate(
+    v42.fixed = (6-v42),
+    .keep = 'all'
+  )
+
+FctWhen = function(...){
+  args = rlang::list2(...)
+  rhs = map(args, rlang::f_rhs)
+  cases = case_when(!!!args)
+  exec(fct_relevel, cases, !!!rhs)
+}
+```
+
+# Introduction
+
+In international studies a growing interest is in individual views on immigration and what could possibly influence these views. In this brief research of the data collected from the International Social Survey Programme conducted three different survey waves from 1995-2013 on national identity. In their data, they also gathered the educational level of the individual and their views on immigration. The question now is whether the level of education that someone has determines their views on immigration.
+
+Before performing any anaylsis and strictly thinking from experience in this area of research, it would be reasonable to assume that the higher degree of education, the more positive view of immigration the individual will have on the global scale. This research intends to apply this thinking to the Hungarian case.
+
+```{r, include=FALSE}
+knitr::write_bib(c('posterdown', 'rmarkdown','pagedown'), 'packages.bib')
+```
+
+# Methods
+
+The International Social Survey Programme (ISSP), is a cross-national collaboration program that conducts annual surveys on social science topics. The survey data was collected through in-person interviews. This survey was replicated three different times in 1995, 2003, and 2013 with the same questions. Hungary was one of the few countries that participated in all three iterations of the survey. Across all three waves, 3,028 individuals were interviewed. One of the demographic questions asked what level of education that the respondent. The following is a quick view of that data in Hungary.
+
+```{r education, echo = FALSE, fig.align='center', out.width="85%"}
+df |> 
+  mutate(across(where(is.labelled), as_factor)) |>
+  filter(COUNTRY == "HU-Hungary") |>
+  drop_na(DEGREE) |>
+  ggplot(aes(x = DEGREE, fill = C_SAMPLE_YEAR)) +
+  facet_wrap(~C_SAMPLE_YEAR) +
+  geom_bar() +
+  scale_y_continuous(
+    expand = c(0,0)
+  ) +
+  scale_x_discrete(
+    labels = c("None", "Elementary", "Middle", "Secondary", "University", "Graduate"),
+    guide = 
+      guide_axis(angle = 45)
+  ) +
+  scale_fill_manual(
+    name = "Year", 
+    labels = c("1995", "2003", "2013"),
+    values = c("#c2b280", "#c19a6b", "#645452")
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(
+    panel.grid = element_blank(),
+    panel.background = element_blank(),
+    axis.line = element_line(color = 'black'),
+    axis.title.x = element_blank(), 
+    plot.title = element_text(hjust = 0.5),
+    strip.background = element_blank(),
+    strip.text = element_blank()
+  ) +
+  labs(
+    title = "Education Level of Respondents",
+    y = "Frequency"
+  )
+```
+
+This look at the educational level of respondents gives a reference point of the majority of individuals that were surveyed. For all three waves, the frequency bar for all three years in Middle School and High School. By 2013, there were more respondents who had completed graduate school. In thinking about this baseline the graph provides, the next question to be investigated is correlation to views on immigration.
+
+# Analysis
+
+Some of the questions in the survey asked about immigrants and views of immigrants within the country. One of those questions asks whether immigrants increase crime rates. The answers range from strongly agree to strongly disagree. The table below compiles the average score for each education level in Hungary. The lowest point value is one which is equivalent to the answer strongly disagree and the highest point value is five which is equivalent to the answer of strongly agree. 
+
+```{r table, message = FALSE, warning = FALSE, echo = FALSE, out.width="75%"}
+df1 = 
+  df |>
+  filter(C_SAMPLE_YEAR == 3481995) |>
+  mutate(
+    v42.fixed = (6-v42),
+    Degree = FctWhen(
+      DEGREE == 0 ~ "None",
+      DEGREE == 1 ~ "Elementary",
+      DEGREE == 2 ~ "Middle",
+      DEGREE == 3 ~ "Secondary",
+      DEGREE == 4 ~ "University",
+      DEGREE == 5 ~ "Graduate"
+    ),
+    Wave = FctWhen(
+      C_SAMPLE_YEAR == 3481995 ~ "1995"
+    ),
+    .keep = 'all'
+  )|>
+  drop_na(Degree) |>
+  group_by(Degree, Wave)|>
+  summarise(
+    AverageScore = mean(v42.fixed, na.rm = TRUE)
+  )
+  
+df2 =
+  df |>
+  filter(C_SAMPLE_YEAR == 3482003) |>
+  mutate(
+    v42.fixed = (6-v42),
+    Degree = FctWhen(
+      DEGREE == 0 ~ "None",
+      DEGREE == 1 ~ "Elementary",
+      DEGREE == 2 ~ "Middle",
+      DEGREE == 3 ~ "Secondary",
+      DEGREE == 4 ~ "University",
+      DEGREE == 5 ~ "Graduate"
+    ),
+    Wave = FctWhen(
+      C_SAMPLE_YEAR == 3482003 ~ "2003"
+    ),
+    .keep = 'all'
+  )|>
+  drop_na(Degree) |>
+  group_by(Degree, Wave) |>
+  summarise(
+    AverageScore = mean(v42.fixed, na.rm = TRUE)
+  )
+
+df3 = 
+  df |>
+  filter(C_SAMPLE_YEAR == 3482013) |>
+  mutate(
+    v42.fixed = (6-v42),
+    Degree = FctWhen(
+      DEGREE == 0 ~ "None",
+      DEGREE == 1 ~ "Elementary",
+      DEGREE == 2 ~ "Middle",
+      DEGREE == 3 ~ "Secondary",
+      DEGREE == 4 ~ "University",
+      DEGREE == 5 ~ "Graduate"
+    ),
+    Wave = FctWhen(
+      C_SAMPLE_YEAR == 3482013 ~ "2013"
+    ),
+    .keep = 'all'
+  )|>
+  drop_na(Degree) |>
+  group_by(Degree, Wave) |>
+  summarise(
+    AverageScore = mean(v42.fixed, na.rm = TRUE)
+  )  
+
+totals = left_join(df1, df2, by = 'Degree')
+
+totals2 = left_join(totals, df3, by = 'Degree')
+
+finaltotals = 
+  totals2 |>
+  rename(
+    W1 = Wave.x,
+    AvgScore1 = AverageScore.x,
+    W2 = Wave.y,
+    AvgScore2 = AverageScore.y,
+    W3 = Wave,
+    AvgScore3 = AverageScore
+  )
+
+finaltotals |>
+  kable(digits = 1L)
+```
+
+Looking at the first wave of the survey, respondents with no formal education, middle and secondary education had an average answer of around 4. This average cooresponds to the answer of Agree when asked about whether immigrants increase crime rates. However, those with higher education levels had average scores of 3 which is associated with the answer of Neither Agree nor Disagree when it comes to the views on immigration and crime rates. Over second two waves, there is a decrease in average scores for those below University education levels and for all levels with the final iteration of the survey.
+
+# Results
+
+Following this examination of average scores, a regression analysis was performed to view possible correlation between educational degree and the response to the survey question about immmigrants increasing crime. In addition, age, sex, years of education, and work hours were also examined to see if that had any effect as well. 
+
+```{r regression, echo = FALSE, include = TRUE, out.width="300%"}
+mods =
+  list(
+    m1 = felm(v42.fixed ~ DEGREE + AGE + SEX|C_SAMPLE_YEAR|0|C_SAMPLE_YEAR, data = df),
+    m2 = felm(v42.fixed ~ DEGREE + AGE + SEX + EDUCYRS|C_SAMPLE_YEAR|0|C_SAMPLE_YEAR, data = df),
+    m3 = felm(v42.fixed ~ DEGREE + AGE + SEX + EDUCYRS + WRKHRS |C_SAMPLE_YEAR|0|C_SAMPLE_YEAR, data = df)
+  )
+modelsummary(mods,
+             type = 'text', 
+             gof_map = 'nobs',
+             stars = c('*' = 0.05),
+             keep.stat = 'n',
+             statistic = NULL,
+             ) |>
+  tab_header(
+    title = 'Immigrant Crime Rate Response'
+  ) |>
+  tab_options(
+    table.font.size = 50,
+    heading.title.font.size = 50,
+    table.width = "100%"
+  )
+```
+The regression table shows that there is correlation between degree and response rate. Model one only examines the variables of degree, age, and sex. For the results on degree and age, these results were found to be statistically significant. For every one point increase in degree, there was a 0.164 drop in agreement with the idea that immigrants raise crime. Age also is statistically siginiciant and for every one point increase in age, there is a 0.007 increase in agreement with the statement which is interesting. Model two examines on more variable of years of schooling rather than degree. In this model both the degree variable and educational years are both statistically significant. Model 3 has predominantly negative coefficients but none are significant
+
+```{r coefficint plot, echo = FALSE, include = TRUE, warning = FALSE, message = FALSE, fig.align='center', out.width= "85%"}
+modelplot(mods, coef_omit = 'Interc') +
+  scale_color_manual(
+    name = "Model", 
+    labels = c("Small Model", "Medium Model", "Large Model"),
+    values = c("#f0e130", "#100c08", "#ff0800")
+  ) + 
+  theme_minimal(base_size = 15) +
+  theme(
+    panel.grid = element_blank(),
+    panel.background = element_blank(),
+    plot.title = element_text(hjust = 0.5),
+    axis.line = element_line(color = 'black'),
+    strip.background = element_blank(),
+    strip.text = element_blank()
+  ) +
+  labs(
+    x = 'Coefficients',
+    title = 'Linear Regression of "Immigrants Crime Rate Response"'
+  )
+```
+
+In looking at the data, it appears that there is a relationship between education and views on immigration. Those with higher educational degrees or more years of education would be less likely to agree that immigrants increase crime rates. However this data is only for the country of Hungary so there is more research to be done on the background that would contribute to this kind of thinking. The differences between higher degrees and lower degrees are very small and that is interesting. The overall results do prove the hypothesis that the higher the education, the more positive the views on immigrants and immigration.
+
+# References
+
+- ISSP Research Group (2020). International Social Survey Programme: National Identity I-III - ISSP 1995-2003-2013. GESIS Data Archive, Cologne. ZA5960 Data file Version 1.0.0, https://doi.org/10.4232/1.13471.
