@@ -1,0 +1,33 @@
+{
+    "id": "759E2383",
+    "path": "~/Desktop/data analysis/poster/poster.Rmd",
+    "project_path": "poster.Rmd",
+    "type": "r_markdown",
+    "hash": "2695939002",
+    "contents": "",
+    "dirty": false,
+    "created": 1713320174340.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "215,0",
+        "scrollLine": "208",
+        "rmdVisualMode": "false",
+        "rmdVisualCollapsedChunks": "2739",
+        "rmdVisualModeLocation": "3728:1473",
+        "rmdVisualWrapConfigured": "true",
+        "docOutlineVisible": "0",
+        "last_setup_crc32": "38557f50fbcb9a5b"
+    },
+    "folds": "216|65|238|0|\n",
+    "lastKnownWriteTime": 1713749678,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1713749678724,
+    "read_only": false,
+    "read_only_alternatives": []
+}

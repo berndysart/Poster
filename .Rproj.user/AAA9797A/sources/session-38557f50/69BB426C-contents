@@ -1,0 +1,116 @@
+#Class Script 
+#February 7, 2024
+#Bern DySart
+
+#load packages
+library(tidyverse)
+library(readxl)
+
+#append-----------
+#adding new observations
+
+#data
+  cd1 = read_excel('cds Alab NewY.xlsx')
+  cd2 = read_excel('cds NorthC Wyo.xlsx')
+
+#Add togethers
+  cds = bind_rows(cd1,cd2)
+  cdsb = bind_rows(list(a = cd1, b = cd2), .id = 'source')  
+
+#appending with distinct vars &/or var names
+  cd2m  = #deliberately messing up code
+    cd2 |>
+    rename(DistNum = distnum) |>
+    select(-PVI.16)
+  
+  cd2mu = bind_rows(cd1, cd2m)
+  
+rm(list = setdiff(ls(), 'cds'))
+
+#merge/join-------------
+#adds variables
+#,atcjes cases by unique id
+
+#data to incorporate
+
+states = read_csv('states.csv')
+inc = read_csv('incumb.csv')
+demog = read_csv('cddem.csv')
+
+#merge two by unique identifier
+df1 = 
+  left_join(
+    cds,
+    demog
+  )
+
+#join when id names dont match
+df2 = 
+  left_join(
+    df1,
+    states,
+    by = join_by(state == stcode)
+  )
+
+#join when multiple comlums identify
+df3 = 
+  left_join(
+    df2, 
+    inc, 
+    by = join_by(inc.first, inc.last)
+  )
+ rm(list = ls())
+
+ 
+#pivot/reshape---------
+ #data
+ wdi = read_excel('WDI pull.xlsx', na = '..')
+ wdi = read_excel("~/Desktop/data analysis/class scripts/Week 4/WDI pull.xlsx")
+
+ #lengthening pivots-------
+ #start with small frame as example
+ mx = 
+   wdi |>
+   filter(
+     cName == 'Mexico',
+     vCode == 'EN.ATM.CO2E.PP.GD'
+   )
+
+#tidy by lengthening
+ mx |>
+   pivot_longer(
+     cols = starts_with('2'),
+     names_to = 'year',
+     names_transform = list(year = as.integer),
+     values_to = 'emit'
+   )
+
+#widening pivot
+ y2005 = 
+   wdi |>
+   select(cName: '2005', -vName)
+ 
+ wide =
+   y2005 |>
+   pivot_wider(
+     names_from = vCode,
+     values_from = '2005'
+   )
+#fix wdi
+ #lengthen first
+ longwdi = 
+   wdi |>
+   select(-vName) |>
+   pivot_longer(
+     cols = starts_with('2'),
+     names_to = 'year',
+     values_to = 'scores'
+   )
+ 
+ #now wider
+ wdi2 = 
+   longwdi |>
+   pivot_wider(
+     names_from = vCode,
+     values_from = 'scores'
+   )

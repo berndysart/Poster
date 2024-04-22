@@ -1,0 +1,102 @@
+#load packages
+  library(tidyverse)
+  library(stargazer)
+  library(haven)
+
+#set project folder
+  setwd("/Users/berndysart/Desktop/stats - R")
+  
+#load data  
+  list.files()  
+  allISSP <- read_sav("ZA5960_v1-0-0.sav") #cumulated values
+
+#variable
+  #exposure variable: Citizenship membership (V39)
+  #outcome variable: Citizen (V6)
+  #country name: Ireland (372), Russia (643), Czech Republic (203)
+  #control: party affiliation (PARTY_LR),Voting in last eleciton (VOTE_LE), 
+  # Where living (URBRURAL) 
+  
+  count(allISSP,COUNTRY)%>%
+    print(n=50) #ask Hart
+  count(allISSP, YEAR_SDNO)
+  
+  vars1.0 = #isolates variables I want
+    allISSP%>%
+    select(v6, COUNTRY, PARTY_LR, VOTE_LE, URBRURAL, AGE, SEX, YEAR_SDNO)
+  vars2.0 = 
+    vars1.0 %>%
+    mutate( #MR CLEAN THE DATA
+      v6.fixed = (5 - v6) #this flips the scale so its correct
+    )
+
+hist(vars2.0$v6.fixed,
+     xlab = 'Feeling Importance',
+     main = 'Importance to Have [Country] Citizenship') 
+I = #cases I want
+    vars2.0 %>%
+    filter(COUNTRY ==372)  
+
+R = 
+  vars2.0%>%
+  filter(COUNTRY==643)
+
+CR =
+  vars2.0%>%
+  filter(COUNTRY==203)
+
+vars3.0 = bind_rows(I,R,CR)
+
+
+hist(I$v6.fixed,
+     xlab ='Importance to Have Nation Citizenship',
+     main ='Importance of Irish Citizenship?')
+summary(I$v6.fixed)
+
+hist(R$v6.fixed,
+     xlab ='Importance to Have Nation Citizenship',
+     main ='Importance of Russian Citizenship?')
+summary(R$v6.fixed)
+
+hist(CR$v6.fixed,
+     xlab ='Importance to Have Nation Citizenship',
+     main ='Importance of Czech Citizenship?')
+summary(CR$v6.fixed)
+
+plot(v6.fixed~AGE, data = I,
+     xlab = 'Age of Respondent',
+     ylab = 'Importance of Nation Citizenship', 
+     main = 'Views on Irish Citizenship Based on Age')
+I.model = lm(v6.fixed~AGE, data=I)
+abline(I.model, col = 'purple', lw = 8)
+I.model2 = lm(v6.fixed~AGE + URBRURAL + PARTY_LR + as.factor(YEAR_SDNO), data = I)
+stargazer(I.model, I.model2, type = 'text', keep.stat = 'n')
+
+plot(v6.fixed~AGE, data = R,
+     xlab = 'Age of Respondent',
+     ylab = 'Importance of Nation Citizenship', 
+     main = 'Views on Russian Citizenship Based on Age')
+R.model = lm(v6.fixed~AGE, data=R)
+abline(R.model, col = 'orange', lw = 8)
+R.model2 = lm(v6.fixed~AGE + URBRURAL + PARTY_LR + as.factor(YEAR_SDNO), data = R)
+stargazer(R.model,R.model2, type = 'text', keep.stat = 'n')
+
+plot(v6.fixed~AGE, data = CR,
+  xlab = 'Age of Respondent',
+  ylab = 'Importance of Nation Citizenship', 
+  main = 'Views on Czech Citizenship Based on Age')
+CR.model = lm(v6.fixed~AGE, data=CR)
+  abline(CR.model, col = 'blue', lw = 8)
+CR.model2 = lm(v6.fixed~AGE + URBRURAL + PARTY_LR + as.factor(YEAR_SDNO), data = CR)
+stargazer(CR.model, CR.model2, type = 'text', keep.stat = 'n')
+
+
+model1 = lm(v6~AGE + as.factor(YEAR_SDNO), data = I)
+abline(model1, col = 'green', lw = 8)
+
+
+stargazer(model1, type = 'text', keep.stat = 'n')
+
+
+model2 = lm(bci_bci~wdi_wip + fi_index + vdem_polyarchy, data = vars1)
+stargazer(model1, model2, type = 'text', keep.stat = 'n')

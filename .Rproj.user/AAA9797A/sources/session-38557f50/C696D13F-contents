@@ -1,0 +1,132 @@
+---
+title: "Problem Set 3"
+author: "Bern DySart"
+date: "2024-02-14"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(readr)
+library(xtable)
+load('ssa_water.Rdata')
+Crid = read_csv('CRid.csv') #id file
+Exp10 = read_csv('exp10.csv') #bonus
+Exp11 = read_csv('exp11.csv') #pay
+load('WordleDictionary.Rdata')
+knitr::opts_chunk$set(echo = TRUE)
+```
+1: See table below
+```{r, echo=TRUE}
+water1.0 = 
+  water |>
+  select(
+    countryModule,
+    interviewYear,
+    waterTimeMins
+  ) 
+
+water2.0 = 
+  water1.0 |>
+  group_by(countryModule) |>
+  summarise(
+    n = n(),
+    year = list(unique(interviewYear)),
+    wtdmean = mean(waterTimeMins, na.rm = TRUE),
+    wtdsd = sd(waterTimeMins, na.rm = TRUE), 
+    wtdmed = median(waterTimeMins, na.rm = TRUE), 
+    perplot = mean(waterTimeMins == 0, na.rm = TRUE) * 100
+  )
+
+kable(water2.0, digits = 0)
+```
+
+2. See summary data below
+
+```{r, echo=TRUE}
+ Exp11.fixed = 
+   Exp11|>
+   rename(
+     Bonus = Pay
+   ) |>
+   select (start, CompCode, Bonus)
+ 
+ Exp10.fixed = 
+   Exp10 |>
+   select(start, CompCode, Bonus)
+
+ Exp1011 = 
+   full_join(
+     Exp11.fixed,
+     Exp10.fixed,
+     by = join_by(CompCode)
+   )
+ 
+ full = 
+   inner_join(
+     Exp1011, 
+     Crid, 
+     by = join_by(CompCode)
+   )
+ 
+ full2.0 = 
+   full |>
+   select(AssignmentID, rID, CompCode, Bonus.x)
+
+str(full2.0)
+```
+
+3. See Table Below
+```{r, echo=TRUE}
+wordle1.0 = 
+  wordle |>
+  pivot_longer(
+    cols = starts_with('l'),
+    names_to = 'id',
+    values_to = 'letters'
+  )
+
+wordle2.0 =
+    wordle1.0 |>
+    count(letters) |>
+    arrange(desc(n))
+
+kable(wordle2.0)
+```
+
+4. See table below for highest and lowest scoring words
+```{r, echo=TRUE}
+wordle3.0 = 
+  left_join(
+    wordle1.0, 
+    wordle2.0, 
+    by = join_by(letters)
+  )
+
+wordle4.0 =
+  wordle3.0 |>
+  group_by(word) |>
+  summarise(
+    n = sum(n)
+  ) |>
+  filter(n == max(n) | n == min(n)) |>
+  arrange(desc(n))
+
+kable(wordle4.0)
+```
+
+5. See table for highest and lowest scoring words without repeating letters
+```{r, echo=TRUE}
+wordle5.0 = 
+  wordle3.0 |>
+  group_by(word) |>
+  filter(dups == FALSE) |>
+  summarise(
+    n = sum(n)
+  ) |>
+  filter(n == max(n) | n == min(n)) |>
+  arrange(desc(n))
+
+kable(wordle5.0)
+```

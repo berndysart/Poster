@@ -1,0 +1,34 @@
+#load packages
+library(tidyverse)
+library(stargazer)
+library(haven)
+
+# set project folder
+  setwd("/Users/berndysart/Desktop/stats - R")
+
+#load data  
+  list.files()  
+  ZA5960_v1_0_0 <- read_sav("ZA5960_v1-0-0.sav")  
+  ZA5961_v1_0_0 <- read_sav("ZA5961_v1-0-0.sav")
+  ZA5950_v2_0_0 <- read_sav("ZA5950_v2-0-0.sav") #2013 data for both Turkey and US
+#v46 thru v62
+  
+#US_PRTY13, US_PRTY03, US_PRTY95, US_INC13, US_INC03, US_RINC13, US_RINC03
+#US_DEGR03, US_DEGR13 #(ask Hart about creating new data set)
+
+#US_REG, US_Size, v39, v40, v41, v48, v49, v50
+  
+count(ZA5961_v1_0_0,US_ETHN213)%>%
+  print(n=50) #ask Hart
+
+count(ZA5961_v1_0_0, US_PRTY13)%>%
+  print(n=50)
+
+count(ZA5961_v1_0_0,US_PRTY03)
+
+count(ZA5961_v1_0_0,US_PRTY95)
+
+US = filter(ZA5961_v1_0_0,US_ETHN213==840)
+
+count(ZA5960_v1_0_0,PARTY_LR)
+filter(ZA5960_v1_0_0,PARTY_LR)

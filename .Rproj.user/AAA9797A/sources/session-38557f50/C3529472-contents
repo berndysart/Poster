@@ -1,0 +1,131 @@
+5#March 6, 2024
+#Visualisation 2
+
+install.packages("patchwork")
+
+#load data----------------
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(patchwork)
+
+#diff format and date, but common to see and encounter in the data world
+path = "Trash Wheel Collection Data.xlsx" 
+
+df =
+  path |>
+  excel_sheets() |>
+  set_names() |>
+  map_dfr(read_excel, path = path, .id = "wheel")
+
+#graphing dates-----------
+#set dates
+df = 
+  df |>
+  mutate(mydate = as_date(date)) |>
+  group_by(wheel) |>
+  mutate(weight_runtotal = cumsum(weight)) #only works because it was already grouped by time and would have to order by date
+
+#plot cumulative trash weight by wheel
+df |>
+  ggplot(aes(x = mydate, y = weight_runtotal, colour = wheel)) +
+  geom_line() +
+  scale_x_date(
+    date_labels = "%Y %b"
+  )
+
+#trends in collection by wheel
+df |> #terrible graph, never use because too busy. Christmas photo in front of tree with three items and holding dog and background and silly face, too much crap in the plot
+  ggplot(aes(x = mydate, y = weight, colour = wheel)) +
+  geom_point(shape = 21, alpha = 1/2) +
+  geom_smooth(se = F)+
+  scale_x_date(
+    date_labels = "%Y %b"
+  ) +
+  theme(
+    text = element_text(family = "mono")
+  )
+
+#monthly trends in collection
+tab = 
+  df |>
+  group_by(wheel, month = month(mydate, label = T)) |>
+  summarise(
+    n = n(),
+    sumTons = sum(weight)
+  )
+
+tab |> 
+  ggplot(aes(x = month, y = sumTons, fill = wheel)) +
+  geom_col(position = 'dodge')
+
+#facets------------------
+#cycle by wheel
+tab |>
+  ggplot(aes(x = month, y = sumTons, fill = wheel)) + 
+  facet_wrap(~wheel, scales = 'free_y', nrow = 1) + #baseline is to give everyone the same x and y axis to highlight distinctions
+  geom_col() +
+  coord_flip() +
+  theme(
+    legend.position = 'none'
+  )
+#trends in collection by wheel
+df |>
+  ggplot(aes(x = mydate, y = weight, colour = wheel)) +
+  facet_wrap(~wheel) +
+  geom_point(shape = 21, alpha = 1/2) +
+  geom_smooth(se = F)+
+  scale_x_date(
+    date_labels = "%Y %b"
+  ) +
+  theme(
+    text = element_text(family = "mono"),
+    legend.position = 'none'
+  )
+#patchwork --------------
+# plot1
+p1 = 
+  df |>
+  ggplot(aes(x = weight)) +
+  geom_histogram(color = 'white')
+
+# plot2
+p2 = 
+  df |>
+  ggplot(aes(x = mydate, y = weight_runtotal, color = wheel)) +
+  geom_line() +
+  scale_x_date(date_labels = "%Y %b")
+
+# plot3
+p3 = 
+  df |>
+  ggplot(aes(x = mydate, y = weight, color = wheel)) +
+  facet_wrap(~ wheel) +
+  geom_point(alpha = 0.4, shape = 1) +
+  geom_smooth(se = FALSE) +
+  scale_x_date(date_labels = "%Y") +
+  theme(legend.position = 'none',
+        strip.background = element_blank(),
+        strip.text.x = element_blank())
+
+# plot4
+p4 = 
+  tab |>
+  ggplot(aes(x = month, y = sumTons, fill = wheel)) +
+  geom_col(position = 'dodge') +
+  theme(legend.position = 'none')
+
+#patch them together
+p1 + p2 + p3 + guide_area() +
+  plot_layout(guides = 'collect')
+
+#specific layout
+layout = "
+AB
+CC
+CC
+DE
+"
+
+p1 + p2 + p3 + p4 + guide_area() +
+  plot_layout(design = layout, guides = 'collect')

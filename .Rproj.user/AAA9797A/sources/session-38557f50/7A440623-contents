@@ -1,0 +1,69 @@
+#Class Workshop
+#November 14, 2023
+#B. DySart
+
+#load packages
+  library(tidyverse)
+  library(stargazer)
+  library(haven)
+
+#set project folder
+  setwd("/Users/berndysart/Desktop/stats - R") 
+  list()
+ 
+#load data
+ QoG <-read_sav('qog_std_cs_jan23.sav')
+
+#variable
+  #exposure variable: women’s representation in parliament(wdi_wip)
+  #outcome variable: level of corruption (bci_bci)
+  #country name (cname)
+  #control: econ freedom (fi_index), level of democracy (vdem_polyarchy)
+ 
+#demonstration
+ #ht_region, gol_esi
+ #ti_epi
+ 
+#new data frame including the only variables you want to keep
+ 
+vars1 = #isolates variables I want
+  QoG %>%
+  select(wdi_wip, bci_bci, cname, fi_index, vdem_polyarchy, ht_region, gol_est, ti_cpi)
+
+var2.2 = #cases I want
+  QoG %>%
+  filter(ht_region ==2|ht_region ==10)
+  
+var4.3 = #new variables
+  QoG %>%
+  mutate( #MR CLEAN THE DATA
+    majoritarian = if_else(gol_est == 1, 1, 0), #specify condition, score if met, score if not met
+    cpi.fixed = (100 - ti_cpi) #this flips the scale so its correct
+  )
+
+save(var2.2, file = 'revised practice.rdata') #save the new cleaned data for later separate use
+
+#mock slide deck practise
+
+#slide 3
+hist(vars1$bci_bci,
+  xlab = 'Level of Corruption', 
+  main = 'Corruption Index')
+  
+summary(vars1$bci_bci)
+
+#slide 4
+plot(bci_bci~wdi_wip, data = vars1,
+     xlab = 'Women in Parliament',
+     ylab = 'Corruption',
+     main = 'Women in Parliament and Corruption')
+model1 = lm(bci_bci~wdi_wip, data = vars1)
+abline(model1, col = 'green', lw = 8) 
+
+
+stargazer(model1, type = 'text', keep.stat = 'n')
+
+#slide 5
+model1 = lm(bci_bci~wdi_wip, data = vars1)
+model2 = lm(bci_bci~wdi_wip + fi_index + vdem_polyarchy, data = vars1)
+stargazer(model1, model2, type = 'text', keep.stat = 'n')
