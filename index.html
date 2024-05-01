@@ -389,104 +389,36 @@ span > #tab:mytable {
 </div>
 <div id="methods" class="section level1">
 <h1>Methods</h1>
-<p>The International Social Survey Programme (ISSP), is a cross-national collaboration program that conducts annual surveys on social science topics. The survey data was collected through in-person interviews. This survey was replicated three different times in 1995, 2003, and 2013 with the same questions. Hungary was one of the few countries that participated in all three iterations of the survey. Across all three waves, 3,028 individuals were interviewed. One of the demographic questions asked what level of education that the respondent. The following is a quick view of that data in Hungary.</p>
-<p><img src="index_files/figure-html/education-1.png" width="85%" style="display: block; margin: auto;" /></p>
-<p>This look at the educational level of respondents gives a reference point of the majority of individuals that were surveyed. For all three waves, the frequency bar for all three years in Middle School and High School. By 2013, there were more respondents who had completed graduate school. In thinking about this baseline the graph provides, the next question to be investigated is correlation to views on immigration.</p>
+<p>The International Social Survey Programme (ISSP), is a cross-national collaboration program that conducts annual surveys on social science topics. The survey data was collected through in-person interviews. This survey was replicated three different times in 1995, 2003, and 2013 with the same questions. Hungary was one of the few countries that participated in all three iterations of the survey. Across all three waves, 3,028 individuals were interviewed. One of the demographic questions asked what is the political ideology of the respondents. The following is a quick view of that data in Hungary.</p>
+<p><img src="index_files/figure-html/ideology-1.png" width="85%" style="display: block; margin: auto;" /></p>
+<p>This look distribution of the political ideology respondents gives a reference point of the majority of individuals that were surveyed. A majority of the Hungarian respondents fall into the category of either right or left, with few people falling into the extremeist categories. There is slightly more people in the category of right identifying respondents but it barely edges out the number of respondents that identify as a part of the left political ideology.</p>
 </div>
 <div id="analysis" class="section level1">
 <h1>Analysis</h1>
 <p>Some of the questions in the survey asked about immigrants and views of immigrants within the country. One of those questions asks whether immigrants increase crime rates. The answers range from strongly agree to strongly disagree. The table below compiles the average score for each education level in Hungary. The lowest point value is one which is equivalent to the answer strongly disagree and the highest point value is five which is equivalent to the answer of strongly agree.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Degree</th>
-<th align="left">W1</th>
-<th align="right">AvgScore1</th>
-<th align="left">W2</th>
-<th align="right">AvgScore2</th>
-<th align="left">W3</th>
-<th align="right">AvgScore3</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">None</td>
-<td align="left">1995</td>
-<td align="right">4.4</td>
-<td align="left">2003</td>
-<td align="right">4.2</td>
-<td align="left">2013</td>
-<td align="right">3.1</td>
-</tr>
-<tr class="even">
-<td align="left">Elementary</td>
-<td align="left">1995</td>
-<td align="right">4.0</td>
-<td align="left">NA</td>
-<td align="right">NA</td>
-<td align="left">2013</td>
-<td align="right">3.7</td>
-</tr>
-<tr class="odd">
-<td align="left">Middle</td>
-<td align="left">1995</td>
-<td align="right">4.3</td>
-<td align="left">2003</td>
-<td align="right">4.0</td>
-<td align="left">2013</td>
-<td align="right">3.7</td>
-</tr>
-<tr class="even">
-<td align="left">Secondary</td>
-<td align="left">1995</td>
-<td align="right">3.8</td>
-<td align="left">2003</td>
-<td align="right">3.6</td>
-<td align="left">2013</td>
-<td align="right">3.3</td>
-</tr>
-<tr class="odd">
-<td align="left">University</td>
-<td align="left">1995</td>
-<td align="right">3.7</td>
-<td align="left">2003</td>
-<td align="right">3.6</td>
-<td align="left">2013</td>
-<td align="right">3.2</td>
-</tr>
-<tr class="even">
-<td align="left">Graduate</td>
-<td align="left">1995</td>
-<td align="right">3.4</td>
-<td align="left">2003</td>
-<td align="right">3.4</td>
-<td align="left">2013</td>
-<td align="right">3.2</td>
-</tr>
-</tbody>
-</table>
+<p><img src="index_files/figure-html/education-1.png" width="85%" style="display: block; margin: auto;" /></p>
 <p>Looking at the first wave of the survey, respondents with no formal education, middle and secondary education had an average answer of around 4. This average cooresponds to the answer of Agree when asked about whether immigrants increase crime rates. However, those with higher education levels had average scores of 3 which is associated with the answer of Neither Agree nor Disagree when it comes to the views on immigration and crime rates. Over second two waves, there is a decrease in average scores for those below University education levels and for all levels with the final iteration of the survey.</p>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
-<p>Following this examination of average scores, a regression analysis was performed to view possible correlation between educational degree and the response to the survey question about immmigrants increasing crime. In addition, age, sex, years of education, and work hours were also examined to see if that had any effect as well.</p>
-<div id="dggvesmyhb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dggvesmyhb table {
+<p>Following this examination of average scores, a regression analysis was performed to view possible correlation between educational degree and the response to the survey question about immmigrants increasing crime. In addition, age, sex, living in an urban or rural area, and whether the respondents supervises others were also examined to see if that had any effect as well.</p>
+<div id="lqwqlflgln" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lqwqlflgln table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dggvesmyhb thead, #dggvesmyhb tbody, #dggvesmyhb tfoot, #dggvesmyhb tr, #dggvesmyhb td, #dggvesmyhb th {
+#lqwqlflgln thead, #lqwqlflgln tbody, #lqwqlflgln tfoot, #lqwqlflgln tr, #lqwqlflgln td, #lqwqlflgln th {
   border-style: none;
 }
 
-#dggvesmyhb p {
+#lqwqlflgln p {
   margin: 0;
   padding: 0;
 }
 
-#dggvesmyhb .gt_table {
+#lqwqlflgln .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -512,12 +444,12 @@ span > #tab:mytable {
   border-left-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_caption {
+#lqwqlflgln .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dggvesmyhb .gt_title {
+#lqwqlflgln .gt_title {
   color: #333333;
   font-size: 50px;
   font-weight: initial;
@@ -529,7 +461,7 @@ span > #tab:mytable {
   border-bottom-width: 0;
 }
 
-#dggvesmyhb .gt_subtitle {
+#lqwqlflgln .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -541,7 +473,7 @@ span > #tab:mytable {
   border-top-width: 0;
 }
 
-#dggvesmyhb .gt_heading {
+#lqwqlflgln .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -553,13 +485,13 @@ span > #tab:mytable {
   border-right-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_bottom_border {
+#lqwqlflgln .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_col_headings {
+#lqwqlflgln .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -574,7 +506,7 @@ span > #tab:mytable {
   border-right-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_col_heading {
+#lqwqlflgln .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -594,7 +526,7 @@ span > #tab:mytable {
   overflow-x: hidden;
 }
 
-#dggvesmyhb .gt_column_spanner_outer {
+#lqwqlflgln .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -606,15 +538,15 @@ span > #tab:mytable {
   padding-right: 4px;
 }
 
-#dggvesmyhb .gt_column_spanner_outer:first-child {
+#lqwqlflgln .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dggvesmyhb .gt_column_spanner_outer:last-child {
+#lqwqlflgln .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dggvesmyhb .gt_column_spanner {
+#lqwqlflgln .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -626,11 +558,11 @@ span > #tab:mytable {
   width: 100%;
 }
 
-#dggvesmyhb .gt_spanner_row {
+#lqwqlflgln .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dggvesmyhb .gt_group_heading {
+#lqwqlflgln .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -656,7 +588,7 @@ span > #tab:mytable {
   text-align: left;
 }
 
-#dggvesmyhb .gt_empty_group_heading {
+#lqwqlflgln .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -671,15 +603,15 @@ span > #tab:mytable {
   vertical-align: middle;
 }
 
-#dggvesmyhb .gt_from_md > :first-child {
+#lqwqlflgln .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dggvesmyhb .gt_from_md > :last-child {
+#lqwqlflgln .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dggvesmyhb .gt_row {
+#lqwqlflgln .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -698,7 +630,7 @@ span > #tab:mytable {
   overflow-x: hidden;
 }
 
-#dggvesmyhb .gt_stub {
+#lqwqlflgln .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -711,7 +643,7 @@ span > #tab:mytable {
   padding-right: 5px;
 }
 
-#dggvesmyhb .gt_stub_row_group {
+#lqwqlflgln .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -725,15 +657,15 @@ span > #tab:mytable {
   vertical-align: top;
 }
 
-#dggvesmyhb .gt_row_group_first td {
+#lqwqlflgln .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dggvesmyhb .gt_row_group_first th {
+#lqwqlflgln .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dggvesmyhb .gt_summary_row {
+#lqwqlflgln .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -743,16 +675,16 @@ span > #tab:mytable {
   padding-right: 5px;
 }
 
-#dggvesmyhb .gt_first_summary_row {
+#lqwqlflgln .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_first_summary_row.thick {
+#lqwqlflgln .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dggvesmyhb .gt_last_summary_row {
+#lqwqlflgln .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -762,7 +694,7 @@ span > #tab:mytable {
   border-bottom-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_grand_summary_row {
+#lqwqlflgln .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -772,7 +704,7 @@ span > #tab:mytable {
   padding-right: 5px;
 }
 
-#dggvesmyhb .gt_first_grand_summary_row {
+#lqwqlflgln .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -782,7 +714,7 @@ span > #tab:mytable {
   border-top-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_last_grand_summary_row_top {
+#lqwqlflgln .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -792,11 +724,11 @@ span > #tab:mytable {
   border-bottom-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_striped {
+#lqwqlflgln .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dggvesmyhb .gt_table_body {
+#lqwqlflgln .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -805,7 +737,7 @@ span > #tab:mytable {
   border-bottom-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_footnotes {
+#lqwqlflgln .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -819,7 +751,7 @@ span > #tab:mytable {
   border-right-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_footnote {
+#lqwqlflgln .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -828,7 +760,7 @@ span > #tab:mytable {
   padding-right: 5px;
 }
 
-#dggvesmyhb .gt_sourcenotes {
+#lqwqlflgln .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -842,7 +774,7 @@ span > #tab:mytable {
   border-right-color: #D3D3D3;
 }
 
-#dggvesmyhb .gt_sourcenote {
+#lqwqlflgln .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -850,67 +782,68 @@ span > #tab:mytable {
   padding-right: 5px;
 }
 
-#dggvesmyhb .gt_left {
+#lqwqlflgln .gt_left {
   text-align: left;
 }
 
-#dggvesmyhb .gt_center {
+#lqwqlflgln .gt_center {
   text-align: center;
 }
 
-#dggvesmyhb .gt_right {
+#lqwqlflgln .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dggvesmyhb .gt_font_normal {
+#lqwqlflgln .gt_font_normal {
   font-weight: normal;
 }
 
-#dggvesmyhb .gt_font_bold {
+#lqwqlflgln .gt_font_bold {
   font-weight: bold;
 }
 
-#dggvesmyhb .gt_font_italic {
+#lqwqlflgln .gt_font_italic {
   font-style: italic;
 }
 
-#dggvesmyhb .gt_super {
+#lqwqlflgln .gt_super {
   font-size: 65%;
 }
 
-#dggvesmyhb .gt_footnote_marks {
+#lqwqlflgln .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dggvesmyhb .gt_asterisk {
+#lqwqlflgln .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dggvesmyhb .gt_indent_1 {
+#lqwqlflgln .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dggvesmyhb .gt_indent_2 {
+#lqwqlflgln .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dggvesmyhb .gt_indent_3 {
+#lqwqlflgln .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dggvesmyhb .gt_indent_4 {
+#lqwqlflgln .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dggvesmyhb .gt_indent_5 {
+#lqwqlflgln .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption><span id="tab:regression">Table 1: </span>DV: Immigration Crime Rate Response</caption>
   <thead>
     <tr class="gt_heading">
       <td colspan="4" class="gt_heading gt_title gt_font_normal gt_bottom_border" style>Immigrant Crime Rate Response</td>
@@ -926,28 +859,28 @@ span > #tab:mytable {
   <tbody class="gt_table_body">
     <tr><td headers=" " class="gt_row gt_left">DEGREE</td>
 <td headers="m1" class="gt_row gt_center">-0.164*</td>
-<td headers="m2" class="gt_row gt_center">-0.070*</td>
-<td headers="m3" class="gt_row gt_center">-0.097</td></tr>
+<td headers="m2" class="gt_row gt_center">-0.153*</td>
+<td headers="m3" class="gt_row gt_center">-0.143*</td></tr>
     <tr><td headers=" " class="gt_row gt_left">AGE</td>
 <td headers="m1" class="gt_row gt_center">0.007*</td>
-<td headers="m2" class="gt_row gt_center">0.007</td>
-<td headers="m3" class="gt_row gt_center">0.004</td></tr>
+<td headers="m2" class="gt_row gt_center">0.007*</td>
+<td headers="m3" class="gt_row gt_center">0.008</td></tr>
     <tr><td headers=" " class="gt_row gt_left">SEX</td>
-<td headers="m1" class="gt_row gt_center">-0.048</td>
-<td headers="m2" class="gt_row gt_center">-0.062</td>
-<td headers="m3" class="gt_row gt_center">-0.096</td></tr>
-    <tr><td headers=" " class="gt_row gt_left">EDUCYRS</td>
 <td headers="m1" class="gt_row gt_center"></td>
-<td headers="m2" class="gt_row gt_center">-0.044*</td>
-<td headers="m3" class="gt_row gt_center">-0.053</td></tr>
-    <tr><td headers=" " class="gt_row gt_left" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;">WRKHRS</td>
+<td headers="m2" class="gt_row gt_center">-0.044</td>
+<td headers="m3" class="gt_row gt_center">-0.052</td></tr>
+    <tr><td headers=" " class="gt_row gt_left">URBRURAL</td>
+<td headers="m1" class="gt_row gt_center"></td>
+<td headers="m2" class="gt_row gt_center">0.055</td>
+<td headers="m3" class="gt_row gt_center">0.048</td></tr>
+    <tr><td headers=" " class="gt_row gt_left" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;">WRKSUP</td>
 <td headers="m1" class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td>
 <td headers="m2" class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;"></td>
-<td headers="m3" class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;">-0.002</td></tr>
+<td headers="m3" class="gt_row gt_center" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000;">0.153</td></tr>
     <tr><td headers=" " class="gt_row gt_left">Num.Obs.</td>
 <td headers="m1" class="gt_row gt_center">2920</td>
-<td headers="m2" class="gt_row gt_center">2918</td>
-<td headers="m3" class="gt_row gt_center">1240</td></tr>
+<td headers="m2" class="gt_row gt_center">2917</td>
+<td headers="m3" class="gt_row gt_center">2727</td></tr>
   </tbody>
   <tfoot class="gt_sourcenotes">
     <tr>
@@ -957,7 +890,7 @@ span > #tab:mytable {
   
 </table>
 </div>
-<p>The regression table shows that there is correlation between degree and response rate. Model one only examines the variables of degree, age, and sex. For the results on degree and age, these results were found to be statistically significant. For every one point increase in degree, there was a 0.164 drop in agreement with the idea that immigrants raise crime. Age also is statistically siginiciant and for every one point increase in age, there is a 0.007 increase in agreement with the statement which is interesting. Model two examines on more variable of years of schooling rather than degree. In this model both the degree variable and educational years are both statistically significant. Model 3 has predominantly negative coefficients but none are significant</p>
+<p>The regression table shows that there is correlation between degree and response rate. Model one only examines the variables of degree, and age. For the results on degree and age, these results were found to be statistically significant. For every one point increase in degree, there was a 0.164 drop in agreement with the idea that immigrants raise crime. Age also is statistically siginiciant and for every one point increase in age, there is a 0.007 increase in agreement with the statement which is interesting. Model two examines the variables of degree, age, sex, and whether the respondent lived in an urban or rural area. In this model both the degree and age variable are both statistically significant. Model 3 has only one statistically significant coefficient in degree. This model also includes a the variable of the previous models but adds if the respondent supervises other people.</p>
 <p><img src="index_files/figure-html/coefficint%20plot-1.png" width="85%" style="display: block; margin: auto;" /></p>
 <p>In looking at the data, it appears that there is a relationship between education and views on immigration. Those with higher educational degrees or more years of education would be less likely to agree that immigrants increase crime rates. However this data is only for the country of Hungary so there is more research to be done on the background that would contribute to this kind of thinking. The differences between higher degrees and lower degrees are very small and that is interesting. The overall results do prove the hypothesis that the higher the education, the more positive the views on immigrants and immigration.</p>
 </div>
@@ -973,9 +906,9 @@ span > #tab:mytable {
 <p>Education Is Correlated to Positive Views on Immigration in Hungary</p>
 </div>
 <div class="main_bottom">
-<img id="main-img-left" src=https://raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png>
-<img id="main-img-center" src=https://raw.githubusercontent.com/brentthorne/posterdown/master/images/qr-code-black.png>
-<img id="main-img-right" src=https://raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png>
+<img id="main-img-left" src=>
+<img id="main-img-center" src=>
+<img id="main-img-right" src=>
 </div>
 </div>
 

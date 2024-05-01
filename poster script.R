@@ -1,5 +1,6 @@
 #script
 
+#libraries loaded---------
 library(tidyverse)
 library(haven)
 library(stargazer)
@@ -7,7 +8,10 @@ library(knitr)
 library(scales)
 library(lfe)
 library(modelsummary)
+library(gt)
+library(kableExtra)
 
+#data from working directory------------
 df = read_sav("ZA5960_v1-0-0.sav")
 
 FctWhen = function(...){
@@ -15,32 +19,29 @@ FctWhen = function(...){
   rhs = map(args, rlang::f_rhs)
   cases = case_when(!!!args)
   exec(fct_relevel, cases, !!!rhs)
-}
+} #function to create new variables from old one with new labels
 
-df = 
+df = #filter out all other countries except Hungary
   df |>
   filter(COUNTRY == 348)|>
-  mutate(
+  mutate( #corrects the scale to be negative to positive with the greater number being positive
     v42.fixed = (6-v42),
     .keep = 'all'
   )
   
-df |>
-group_by(C_SAMPLE_YEAR) |>
-count(v42.fixed)
-
+#education level-----------------
 df |> 
-  mutate(across(where(is.labelled), as_factor)) |>
-  filter(COUNTRY == "HU-Hungary") |>
+  mutate(across(where(is.labelled), as_factor)) |>#instead of using the numeric number, uses factor label
   drop_na(DEGREE) |>
-  ggplot(aes(x = DEGREE, fill = C_SAMPLE_YEAR)) +
-  facet_wrap(~C_SAMPLE_YEAR) +
-  geom_bar() +
+  group_by(DEGREE) |>
+  ggplot(aes(x = DEGREE, y = v42.fixed, fill = C_SAMPLE_YEAR)) +
+  geom_bar(stat = "summary", fun = "mean", position = "dodge2") +
   scale_y_continuous(
-    expand = c(0,0)
+    expand = c(0,0),
+    limits = c(0,5)
   ) +
   scale_x_discrete(
-    labels = c("None", "Elementary", "Middle", "High School", "University", "Graduate School"),
+    labels = c("None", "Elementary", "Middle", "High School", "University", "Graduate School"), #shortens the name
     guide = 
       guide_axis(angle = 45)
   ) +
@@ -61,114 +62,48 @@ df |>
   ) +
   labs(
     title = "Education Level of Respondents",
-    y = "Frequency"
+    y = "Average Score on Survey"
   )
 
 df |>
-  filter(COUNTRY == 348) |>
-  count(C_SAMPLE_YEAR)
------------------
-df1 = 
-  df |>
-  filter(COUNTRY == 348) |>
-  filter(C_SAMPLE_YEAR == 3481995) |>
-  mutate(
-    Degree = FctWhen(
-      DEGREE == 0 ~ "None",
-      DEGREE == 1 ~ "Elementary",
-      DEGREE == 2 ~ "Middle",
-      DEGREE == 3 ~ "Secondary",
-      DEGREE == 4 ~ "University",
-      DEGREE == 5 ~ "Graduate School"
-    ),
-    Wave = FctWhen(
-      C_SAMPLE_YEAR == 3481995 ~ "1995"
-    ),
-    .keep = 'all'
-  )|>
-  drop_na(Degree) |>
-  group_by(Degree, Wave)|>
-  summarise(
-    Observations = n(),
-    AverageScore = mean(v42.fixed, na.rm = TRUE)
+  count(PARTY_LR)
+#general information-----------------------
+
+df |>
+  mutate(across(where(is.labelled), as_factor)) |>
+  drop_na(PARTY_LR) |>
+  ggplot(aes(x = PARTY_LR)) +
+  geom_bar(position = "dodge2", fill = '#d5a499') +
+  coord_flip() +
+  geom_text(stat = 'count', aes(label = after_stat(count), hjust = -0.5)) +
+  scale_y_continuous(
+    expand = c(0,0),
+    limits = c(0,700)
+  ) +
+  scale_x_discrete(
+    labels = c("Far Left", "Left", "Moderate", "Right", "Far Right") #shortens the name
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(
+    panel.grid = element_blank(),
+    panel.background = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.line.y = element_line(colour = 'black'),
+    plot.title = element_text(hjust = 0.5),
+    strip.background = element_blank(),
+    strip.text = element_blank()
+  ) +
+  labs(
+    title = "Political Ideology of Respondents"
   )
-  
-df2 =
-  df |>
-  filter(COUNTRY == 348) |>
-  filter(C_SAMPLE_YEAR == 3482003) |>
-  mutate(
-    Degree = FctWhen(
-      DEGREE == 0 ~ "None",
-      DEGREE == 1 ~ "Elementary",
-      DEGREE == 2 ~ "Middle",
-      DEGREE == 3 ~ "Secondary",
-      DEGREE == 4 ~ "University",
-      DEGREE == 5 ~ "Graduate School"
-    ),
-    Wave = FctWhen(
-      C_SAMPLE_YEAR == 3482003 ~ "2003"
-    ),
-    .keep = 'all'
-  )|>
-  drop_na(Degree) |>
-  group_by(Degree, Wave) |>
-  summarise(
-    Observations = n(),
-    AverageScore = mean(v42.fixed, na.rm = TRUE)
-  )
-
-df3 = 
-  df |>
-  filter(COUNTRY == 348) |>
-  filter(C_SAMPLE_YEAR == 3482013) |>
-  mutate(
-    Degree = FctWhen(
-      DEGREE == 0 ~ "None",
-      DEGREE == 1 ~ "Elementary",
-      DEGREE == 2 ~ "Middle",
-      DEGREE == 3 ~ "Secondary",
-      DEGREE == 4 ~ "University",
-      DEGREE == 5 ~ "Graduate School"
-    ),
-    Wave = FctWhen(
-      C_SAMPLE_YEAR == 3482013 ~ "2013"
-    ),
-    .keep = 'all'
-  )|>
-  drop_na(Degree) |>
-  group_by(Degree, Wave) |>
-  summarise(
-    Observations = n(),
-    AverageScore = mean(v42.fixed, na.rm = TRUE)
-  )  
-
-totals = left_join(df1, df2, by = 'Degree')
-
-totals2 = left_join(totals, df3, by = 'Degree')
-
-finaltotals = 
-  totals2 |>
-  rename(
-    Wave.1 = Wave.x,
-    Observations.1 = Observations.x,
-    AverageScore.1 = AverageScore.x,
-    Wave.2 = Wave.y,
-    Observations.2 = Observations.y,
-    AverageScore.2 = AverageScore.y,
-    Wave.3 = Wave,
-    Observations.3 = Observations,
-    AverageScore.3 = AverageScore
-  )
-
-finaltotals |>
-  kable(digits = 1L)
-
+#regression tables--------------------
 mods =
   list(
-    m1 = felm(v42.fixed ~ DEGREE + AGE + SEX|C_SAMPLE_YEAR|0|C_SAMPLE_YEAR, data = df),
-    m2 = felm(v42.fixed ~ DEGREE + AGE + SEX + EDUCYRS|C_SAMPLE_YEAR|0|C_SAMPLE_YEAR, data = df),
-    m3 = felm(v42.fixed ~ DEGREE + AGE + SEX + EDUCYRS + WRKHRS |C_SAMPLE_YEAR|0|C_SAMPLE_YEAR, data = df)
+    m1 = felm(v42.fixed ~ DEGREE + AGE|C_SAMPLE_YEAR|0|C_SAMPLE_YEAR, data = df),
+    m2 = felm(v42.fixed ~ DEGREE + AGE + SEX + URBRURAL|C_SAMPLE_YEAR|0|C_SAMPLE_YEAR, data = df),
+    m3 = felm(v42.fixed ~ DEGREE + AGE + SEX + URBRURAL + WRKSUP|C_SAMPLE_YEAR|0|C_SAMPLE_YEAR, data = df)
   )
 modelsummary(mods,
              type = 'text', 
@@ -177,8 +112,14 @@ modelsummary(mods,
              keep.stat = 'n',
              statistic = NULL,
              title = 'DV: Immigration Crime Rate Response')
-
-stargazer(mods, type = 'html', keep.stat = 'n')
+  tab_header(
+    title = 'Immigrant Crime Rate Response'
+  ) |>
+  tab_options(
+    table.font.size = 50,
+    heading.title.font.size = 50,
+    table.width = "100%"
+  )
 
 modelplot(mods, coef_omit = 'Interc') +
   scale_color_manual(
@@ -200,4 +141,4 @@ modelplot(mods, coef_omit = 'Interc') +
     title = 'Linear Regression of "Immigrants Raise Crime Rate Question"'
   )
 
-          
+count(df, MARITAL)

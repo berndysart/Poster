@@ -1,1 +1,0 @@
-"0","knitr::write_bib(c('posterdown', 'rmarkdown','pagedown'), 'packages.bib')"
